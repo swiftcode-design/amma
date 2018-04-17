@@ -54,8 +54,24 @@ export default {
         component: 'src/containers/Home',
       },
       {
-        path: '/about',
-        component: 'src/containers/About',
+        path: '/kids',
+        component: 'src/containers/Kids',
+      },
+      {
+        path: '/classes',
+        component: 'src/containers/Classes'
+      },
+      {
+        path: '/schedule',
+        component: 'src/containers/Schedule'
+      },
+      {
+        path: '/memberships',
+        component: 'src/containers/Memberships'
+      },
+      {
+        path: '/instructors',
+        component: 'src/containers/Instructors'
       },
       {
         path: '/blog',
