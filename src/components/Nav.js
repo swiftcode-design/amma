@@ -3,10 +3,40 @@ import { Router, Link } from 'react-static'
 
 import styled from 'styled-components'
 
-import { Wrapper } from './../styles.js'
+import { Wrapper, logoLink } from './../styles.js'
+import * as IoIconPack from 'react-icons/lib/io'
 
+const SocialWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  background: black;
+  color: white;
+  width: 100%;
+  height: 40px;
+`
+const SocialNav = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  h5{
+    color: #5C5C5C;
+    span{
+      color: white;
+    }
+  }
+  ul{
+    list-style-type: none;
+    display: flex;
+    li{
+      color: #5C5C5C;
+      padding: 0 10px;
+      font-size: 28px;
+    }
+  }
+`
 const NavContainer = Wrapper.extend`
-  width: 80%;
+  width: 90%;
 `
 const Nav = styled.nav`
   display: flex;
@@ -17,20 +47,38 @@ const Nav = styled.nav`
 const NavLink = styled(Link) `
   color: #C4C3C3;
   border: 2px solid white;
-  transition: all 0.2;
+  transition: all 0.6s;
   cursor: pointer;
-  :hover{
+  margin: 0 7px;
+  &:hover{
     color: black;
     border-color: #B61217;
   }
+  &.active{
+    color: black;
+    border-color: #B61217;
 `
+
 export default () => (
-  <Wrapper >
-    <div style={{background: "black", width: "100%", color: "white"}}>on top</div>
+  <Wrapper>
+    <SocialWrapper>
+      <SocialNav>
+        <div>
+          <h5>OPENING HOURS MON - SAT <span>6AM - 9PM</span>, SUN <span>8AM - 6PM</span>  </h5>
+        </div>
+        <ul>
+          <li><IoIconPack.IoEmail/></li>
+          <li><IoIconPack.IoSocialFacebook/></li>
+          <li><IoIconPack.IoIosTelephone /></li>
+          <li><IoIconPack.IoIosLocation/></li>
+        </ul>
+
+      </SocialNav>
+    </SocialWrapper>
     <NavContainer row >
-      <img src="http://www.alivemma.dreamhosters.com/wp-content/uploads/2017/06/cropped-c5979c_1a0bb9867e020320c8720e908d3ba9da-e1498343549417.png" />
+      <img src={logoLink}/>
       <Nav>
-        <NavLink to="/">Home</NavLink>
+        <NavLink exact to="/">Home</NavLink>
         <NavLink to="/classes">Classes</NavLink>
         <NavLink to="/kids">Kids</NavLink>
         <NavLink to="/schedule">Schedule</NavLink>
@@ -39,5 +87,6 @@ export default () => (
         <NavLink to="/blog">Blog</NavLink>
       </Nav>
     </NavContainer>
+
   </Wrapper>
 )

@@ -11,17 +11,11 @@ function getPosts () {
     if (fs.existsSync('./src/posts')) {
       klaw('./src/posts')
         .on('data', item => {
-          // Filter function to retrieve .md files //
           if (path.extname(item.path) === '.md') {
-            // If markdown file, read contents //
             const data = fs.readFileSync(item.path, 'utf8')
-            // Convert to frontmatter object and markdown content //
             const dataObj = matter(data)
-            // Create slug for URL //
             dataObj.data.slug = dataObj.data.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')
-            // Remove unused key //
             delete dataObj.orig
-            // Push object into items array //
             items.push(dataObj)
           }
         })
@@ -29,16 +23,39 @@ function getPosts () {
           console.log(e)
         })
         .on('end', () => {
-          // Resolve promise for async getRoutes request //
-          // posts = items for below routes //
           resolve(items)
         })
     } else {
-      // If src/posts directory doesn't exist, return items as empty array //
       resolve(items)
     }
   })
   return getFiles()
+}
+function getSliderImgs () {
+  const imgs = [];
+  const getImageFiles = () => new Promise(resolve => {
+    if (fs.existsSync('./src/sliderImages')) {
+      klaw('./src/sliderImages')
+      .on('data', item => {
+        if (path.extname(item.path) === '.md') {
+          const data = fs.readFileSync(item.path, 'utf8')
+          const dataObj = matter(data)
+          dataObj.data.slug = dataObj.data.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')
+          delete dataObj.orig
+          imgs.push(dataObj)
+        }
+      })
+      .on('error', e => {
+        console.log(e)
+      })
+      .on('end', () => {
+        resolve(imgs)
+      })
+    } else {
+      resolve(imgs)
+    }
+  })
+  return getImageFiles()
 }
 
 export default {
@@ -48,10 +65,15 @@ export default {
   }),
   getRoutes: async () => {
     const posts = await getPosts()
+    const sliderImgs = await getSliderImgs()
+    const testString = 'test'
     return [
       {
         path: '/',
         component: 'src/containers/Home',
+        getData: () => ({
+          sliderImgs
+        })
       },
       {
         path: '/kids',
@@ -77,7 +99,7 @@ export default {
         path: '/blog',
         component: 'src/containers/Blog',
         getData: () => ({
-          posts,
+          posts, testString
         }),
         children: posts.map(post => ({
           path: `/post/${post.data.slug}`,
